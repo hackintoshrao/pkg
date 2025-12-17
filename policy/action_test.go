@@ -61,3 +61,31 @@ func TestActionIsValid(t *testing.T) {
 		}
 	}
 }
+
+func TestTableActionIsValid(t *testing.T) {
+	testCases := []struct {
+		action         TableAction
+		expectedResult bool
+	}{
+		{S3TablesCreateTableAction, true},
+		{S3TablesGetTableAction, true},
+		{S3TablesDeleteTableAction, true},
+		// Tagging actions
+		{S3TablesTagResourceAction, true},
+		{S3TablesUntagResourceAction, true},
+		{S3TablesListTagsForResourceAction, true},
+		// Wildcard
+		{AllS3TablesActions, true},
+		// Invalid
+		{TableAction("s3tables:InvalidAction"), false},
+		{TableAction("foo"), false},
+	}
+
+	for i, testCase := range testCases {
+		result := testCase.action.IsValid()
+
+		if testCase.expectedResult != result {
+			t.Fatalf("case %v: action %q - expected: %v, got: %v", i+1, testCase.action, testCase.expectedResult, result)
+		}
+	}
+}

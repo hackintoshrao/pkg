@@ -74,6 +74,10 @@ const (
 	// S3TablesViewName filters access by the S3 Tables view name within a namespace.
 	S3TablesViewName KeyName = "s3tables:viewName"
 
+	// S3TablesTableBucketTag filters access by tags on the parent table bucket (warehouse).
+	// Enables ABAC for table operations based on warehouse tags.
+	S3TablesTableBucketTag KeyName = "s3tables:TableBucketTag"
+
 	// S3XAmzCopySource - key representing x-amz-copy-source HTTP header applicable to PutObject API only.
 	S3XAmzCopySource KeyName = "s3:x-amz-copy-source"
 
@@ -289,6 +293,7 @@ var AllSupportedKeys = []KeyName{
 	S3TablesNamespace,
 	S3TablesTableName,
 	S3TablesViewName,
+	S3TablesTableBucketTag,
 	AWSReferer,
 	AWSSourceIP,
 	AWSUserAgent,

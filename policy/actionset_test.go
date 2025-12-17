@@ -50,6 +50,13 @@ func TestActionSetMatches(t *testing.T) {
 	}{
 		{NewActionSet(AllActions), AbortMultipartUploadAction, true},
 		{NewActionSet(AllS3TablesActions), S3TablesCreateTableAction, true},
+		// S3 Tables tagging actions should match AllS3TablesActions
+		{NewActionSet(AllS3TablesActions), S3TablesTagResourceAction, true},
+		{NewActionSet(AllS3TablesActions), S3TablesUntagResourceAction, true},
+		{NewActionSet(AllS3TablesActions), S3TablesListTagsForResourceAction, true},
+		// Specific tagging action should match itself
+		{NewActionSet(S3TablesTagResourceAction), S3TablesTagResourceAction, true},
+		{NewActionSet(S3TablesTagResourceAction), S3TablesUntagResourceAction, false},
 		{NewActionSet(PutObjectAction), PutObjectAction, true},
 		{NewActionSet(PutObjectAction, GetObjectAction), PutObjectAction, true},
 		{NewActionSet(PutObjectAction, GetObjectAction), AbortMultipartUploadAction, false},

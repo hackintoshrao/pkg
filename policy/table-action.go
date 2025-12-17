@@ -202,6 +202,18 @@ const (
 	// S3TablesUpdateNamespacePropertiesAction is a MinIO extension for updating namespace properties.
 	S3TablesUpdateNamespacePropertiesAction = "s3tables:UpdateNamespaceProperties"
 
+	// S3TablesTagResourceAction maps to the AWS `TagResource` S3 Tables action.
+	// Used to add or update tags on table buckets (warehouses) or tables.
+	S3TablesTagResourceAction = "s3tables:TagResource"
+
+	// S3TablesUntagResourceAction maps to the AWS `UntagResource` S3 Tables action.
+	// Used to remove tags from table buckets (warehouses) or tables.
+	S3TablesUntagResourceAction = "s3tables:UntagResource"
+
+	// S3TablesListTagsForResourceAction maps to the AWS `ListTagsForResource` S3 Tables action.
+	// Used to list tags on table buckets (warehouses) or tables.
+	S3TablesListTagsForResourceAction = "s3tables:ListTagsForResource"
+
 	// AllS3TablesActions - all Amazon S3 Tables actions
 	AllS3TablesActions = "s3tables:*"
 )
@@ -263,6 +275,9 @@ var SupportedTableActions = map[TableAction]struct{}{
 	S3TablesUpdateViewAction:                             {},
 	S3TablesListViewsAction:                              {},
 	S3TablesUpdateNamespacePropertiesAction:              {},
+	S3TablesTagResourceAction:                            {},
+	S3TablesUntagResourceAction:                          {},
+	S3TablesListTagsForResourceAction:                    {},
 	AllS3TablesActions:                                   {},
 }
 
@@ -358,6 +373,11 @@ func createTableActionConditionKeyMap() map[Action]condition.KeySet {
 	tableActionConditionKeyMap[S3TablesUpdateViewAction] = withCommon(s3TablesNamespaceKey, s3TablesViewNameKey)
 	tableActionConditionKeyMap[S3TablesListViewsAction] = withCommon(s3TablesNamespaceKey)
 	tableActionConditionKeyMap[S3TablesUpdateNamespacePropertiesAction] = withCommon(s3TablesNamespaceKey)
+	// Tagging actions apply to warehouses and tables (not namespaces or views).
+	// Include namespace and tableName for table-level policy conditions.
+	tableActionConditionKeyMap[S3TablesTagResourceAction] = withCommon(s3TablesNamespaceKey, s3TablesTableNameKey)
+	tableActionConditionKeyMap[S3TablesUntagResourceAction] = withCommon(s3TablesNamespaceKey, s3TablesTableNameKey)
+	tableActionConditionKeyMap[S3TablesListTagsForResourceAction] = withCommon(s3TablesNamespaceKey, s3TablesTableNameKey)
 
 	return tableActionConditionKeyMap
 }

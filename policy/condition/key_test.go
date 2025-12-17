@@ -47,6 +47,7 @@ func TestKeyIsValid(t *testing.T) {
 		{S3TablesViewName.ToKey(), true},
 		{S3TablesKMSKeyArn.ToKey(), true},
 		{S3TablesSSEAlgorithm.ToKey(), true},
+		{S3TablesTableBucketTag.ToKey(), true},
 		{Key{name: "foo"}, false},
 	}
 
